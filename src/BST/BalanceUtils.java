@@ -1,9 +1,8 @@
 package BST;
 
-import java.util.Deque;
-import java.util.LinkedList;
-
 public class BalanceUtils {
+
+  public enum Scheme {PERFECT, AVL, REDBLACK};
 
   public static <T extends Comparable<T>> LinkedBSTNode<T> leftRotation(LinkedBSTNode<T> node) {
     LinkedBSTNode<T> right = node.getRight();

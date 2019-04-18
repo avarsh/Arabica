@@ -11,7 +11,7 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
   protected LinkedBSTNode<T> root;
   protected LinkedBSTNode<T> INVALID = new LinkedBSTNode<T>(null);
 
-  public boolean isBalanced() {
+  public boolean isBalanced(BalanceUtils.Scheme balanceScheme) {
     int height = getHeight();
 
     Deque<LinkedBSTNode<T>> toVisit = new LinkedList<>();
@@ -24,16 +24,22 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
       int level = depths.poll();
 
       if (node != null) {
-        // All nodes at depth = height - 2 or less have 2 children
-        // Nodes at depth = height - 1 can have any number of children (up to 2)
-        // Nodes at depth = height must be leaves
-        if (level <= height - 2) {
-          if (node.getRight() == null || node.getLeft() == null) {
-            System.out.println(level + ", " + height);
-            return false;
+        if (balanceScheme == BalanceUtils.Scheme.PERFECT) {
+          // All nodes at depth = height - 2 or less have 2 children
+          // Nodes at depth = height - 1 can have any number of children (up to 2)
+          // Nodes at depth = height must be leaves
+          if (level <= height - 2) {
+            if (node.getRight() == null || node.getLeft() == null) {
+              return false;
+            }
+          } else if (level == height) {
+            if (node.getLeft() != null || node.getRight() != null) {
+              return false;
+            }
           }
-        } else if (level == height) {
-          if (node.getLeft() != null || node.getRight() != null) {
+        } else if (balanceScheme == BalanceUtils.Scheme.AVL) {
+          if (Math.abs(getHeight(node.getLeft()) -
+              getHeight(node.getRight())) > 1) {
             return false;
           }
         }
@@ -175,7 +181,7 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
           }
 
           current.setData(minimum.getData());
-          return current;
+          return minimumParent;
         }
       } else if (comparison > 0) {
         parent = current;

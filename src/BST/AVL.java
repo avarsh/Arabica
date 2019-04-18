@@ -52,8 +52,6 @@ public class AVL<T extends Comparable<T>> extends LinkedBST<T> {
             parent.setRight(modified);
           }
         }
-
-        break;
       }
     }
   }
