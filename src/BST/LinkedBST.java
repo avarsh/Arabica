@@ -11,7 +11,7 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
   protected LinkedBSTNode<T> root;
   protected LinkedBSTNode<T> INVALID = new LinkedBSTNode<T>(null);
 
-  public boolean isBalanced(BalanceUtils.Scheme balanceScheme) {
+  public boolean isBalanced() {
     int height = getHeight();
 
     Deque<LinkedBSTNode<T>> toVisit = new LinkedList<>();
@@ -24,22 +24,15 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
       int level = depths.poll();
 
       if (node != null) {
-        if (balanceScheme == BalanceUtils.Scheme.PERFECT) {
-          // All nodes at depth = height - 2 or less have 2 children
-          // Nodes at depth = height - 1 can have any number of children (up to 2)
-          // Nodes at depth = height must be leaves
-          if (level <= height - 2) {
-            if (node.getRight() == null || node.getLeft() == null) {
-              return false;
-            }
-          } else if (level == height) {
-            if (node.getLeft() != null || node.getRight() != null) {
-              return false;
-            }
+        // All nodes at depth = height - 2 or less have 2 children
+        // Nodes at depth = height - 1 can have any number of children (up to 2)
+        // Nodes at depth = height must be leaves
+        if (level <= height - 2) {
+          if (node.getRight() == null || node.getLeft() == null) {
+            return false;
           }
-        } else if (balanceScheme == BalanceUtils.Scheme.AVL) {
-          if (Math.abs(getHeight(node.getLeft()) -
-              getHeight(node.getRight())) > 1) {
+        } else if (level == height) {
+          if (node.getLeft() != null || node.getRight() != null) {
             return false;
           }
         }
@@ -54,27 +47,27 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
     return true;
   }
 
-  protected LinkedBSTNode<T> insertNode(T data) {
+  protected LinkedBSTNode<T> insertNode(LinkedBSTNode<T> node) {
     if (root == null) {
-      root = new LinkedBSTNode<T>(data);
+      root = node;
       return root;
     } else {
       LinkedBSTNode<T> current = root;
 
       while (true) {
-        int comparison = current.getData().compareTo(data);
+        int comparison = current.getData().compareTo(node.getData());
         if (comparison == 0) {
           return INVALID;
         } else if (comparison > 0) {
           if (current.getLeft() == null) {
-            current.setLeft(new LinkedBSTNode<>(data));
+            current.setLeft(node);
             return current.getLeft();
           } else {
             current = current.getLeft();
           }
         } else {
           if (current.getRight() == null) {
-            current.setRight(new LinkedBSTNode<>(data));
+            current.setRight(node);
             return current.getRight();
           } else {
             current = current.getRight();
@@ -92,7 +85,7 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
    */
   @Override
   public boolean add(T data) {
-    return insertNode(data) == INVALID;
+    return insertNode(new LinkedBSTNode<>(data)) == INVALID;
   }
 
   /**

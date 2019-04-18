@@ -1,12 +1,34 @@
 package BST;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AVL<T extends Comparable<T>> extends LinkedBST<T> {
 
+  public boolean isBalanced() {
+    Deque<LinkedBSTNode<T>> toVisit = new LinkedList<>();
+    toVisit.addFirst(root);
+    while(!toVisit.isEmpty()) {
+      LinkedBSTNode<T> node = toVisit.poll();
+
+      if (node != null) {
+        if (Math.abs(getHeight(node.getLeft()) -
+            getHeight(node.getRight())) > 1) {
+          return false;
+        }
+
+        toVisit.add(node.getLeft());
+        toVisit.add(node.getRight());
+      }
+    }
+
+    return true;
+  }
+
   @Override
   public boolean add(T data) {
-    LinkedBSTNode<T> node = insertNode(data);
+    LinkedBSTNode<T> node = insertNode(new LinkedBSTNode<T>(data));
 
     if (node == INVALID) return false;
 

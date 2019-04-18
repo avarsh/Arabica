@@ -18,11 +18,28 @@ public class AVLTest {
     AVL<Integer> tree = new AVL<Integer>();
     for (int i : elements) {
       tree.add(i);
-      assertTrue(tree.isBalanced(BalanceUtils.Scheme.AVL));
+      assertTrue(tree.isBalanced());
     }
 
     int expected = (int)(Math.floor(Math.log(elements.length)/Math.log(2)));
     assertEquals(expected, tree.getHeight());
+  }
+
+  @Test
+  public void testCase1() {
+    int[] elements = {60, 50, 80, 20, 55, 70, 90, 10, 40};
+    AVL<Integer> tree = new AVL<Integer>();
+    for (int i : elements) {
+      tree.add(i);
+    }
+
+    assertEquals("60 50 20 10 40 55 80 70 90",
+        tree.toString().stripTrailing());
+
+    tree.add(35);
+
+    assertEquals("60 40 20 10 35 50 () 55 80 70 90",
+        tree.toString().stripTrailing());
   }
 
   @Test
@@ -60,7 +77,7 @@ public class AVLTest {
         assertTrue(tree.contains(item));
       }
 
-      assertTrue(tree.isBalanced(BalanceUtils.Scheme.AVL));
+      assertTrue(tree.isBalanced());
     }
   }
 }
