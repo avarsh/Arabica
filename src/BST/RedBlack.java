@@ -37,7 +37,7 @@ public class RedBlack<T extends Comparable<T>> extends LinkedBST<T> {
             uncle = (RedBlackNode<T>)grandparent.getRight();
           } else {
             assert(parent.isRightChild()); // Debugging only
-            uncle = (RedBlackNode<T>)grandparent.getRight();
+            uncle = (RedBlackNode<T>)grandparent.getLeft();
           }
 
           // If uncle node is red, then parent, uncle become black,
