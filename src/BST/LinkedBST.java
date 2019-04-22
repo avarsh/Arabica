@@ -132,6 +132,7 @@ public class LinkedBST<T extends Comparable<T>> implements BST<T> {
             }
           }
 
+
           return parent;
         } else if (current.getLeft() == null) {
           if (parent == null) {

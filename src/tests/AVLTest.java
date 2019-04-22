@@ -1,7 +1,6 @@
 package tests;
 
 import BST.AVL;
-import BST.BalanceUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
